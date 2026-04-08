@@ -1,3 +1,3 @@
-module github.com/hikasami/kodik-api
+module github.com/10kkyvl/kodik-api-animaru
 
 go 1.23
