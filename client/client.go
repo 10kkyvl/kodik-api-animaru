@@ -2,15 +2,16 @@ package client
 
 import (
 	"encoding/json"
-	"github.com/hikasami/kodik-api/errors"
 	"net/http"
 	"net/url"
 	"strings"
 	"time"
+
+	"github.com/hikasami/kodik-api/errors"
 )
 
 const (
-	DefaultDomain = "kodikapi.com"
+	DefaultDomain = "kodik-api.com"
 )
 
 // Client хранит настройки для работы с API.
