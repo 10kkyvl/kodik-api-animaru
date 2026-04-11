@@ -1,8 +1,8 @@
 package api
 
 import (
-	"github.com/hikasami/kodik-api/client"
-	"github.com/hikasami/kodik-api/models"
+	"github.com/10kkyvl/kodik-api-animaru/client"
+	"github.com/10kkyvl/kodik-api-animaru/models"
 )
 
 // Genres выполняет запрос к эндпоинту /genres API Kodik с параметрами models.GenresParams.

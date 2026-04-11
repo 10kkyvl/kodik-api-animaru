@@ -1,8 +1,8 @@
 package api
 
 import (
-	"github.com/hikasami/kodik-api/client"
-	"github.com/hikasami/kodik-api/models"
+	"github.com/10kkyvl/kodik-api-animaru/client"
+	"github.com/10kkyvl/kodik-api-animaru/models"
 )
 
 // List выполняет запрос к эндпоинту /list API Kodik, используя параметры, заданные в структуре models.ListParams.

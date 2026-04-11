@@ -1,8 +1,8 @@
 package builder
 
 import (
-	"github.com/hikasami/kodik-api/api"
-	"github.com/hikasami/kodik-api/models"
+	"github.com/10kkyvl/kodik-api-animaru/api"
+	"github.com/10kkyvl/kodik-api-animaru/models"
 )
 
 // Query представляет объект для построения запроса /search API Kodik.
