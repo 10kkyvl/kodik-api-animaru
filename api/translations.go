@@ -1,8 +1,8 @@
 package api
 
 import (
-	"github.com/hikasami/kodik-api/client"
-	"github.com/hikasami/kodik-api/models"
+	"github.com/10kkyvl/kodik-api-animaru/client"
+	"github.com/10kkyvl/kodik-api-animaru/models"
 )
 
 // Translations выполняет запрос к эндпоинту /translations/v2 API Kodik,

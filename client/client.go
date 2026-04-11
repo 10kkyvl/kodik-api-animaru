@@ -7,7 +7,7 @@ import (
 	"strings"
 	"time"
 
-	"github.com/hikasami/kodik-api/errors"
+	"github.com/10kkyvl/kodik-api-animaru/errors"
 )
 
 const (
