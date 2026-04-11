@@ -50,113 +50,54 @@ type CountriesParams struct {
 func (cp *CountriesParams) ToMap() map[string]string {
 	params := make(map[string]string)
 
-	if cp.Types != "" {
-		params["types"] = cp.Types
+	fields := map[string]string{
+		"types":              cp.Types,
+		"year":               cp.Year,
+		"translation_type":   cp.TranslationType,
+		"has_field":          cp.HasField,
+		"sort":               cp.Sort,
+		"genres":             cp.Genres,
+		"anime_genres":       cp.AnimeGenres,
+		"drama_genres":       cp.DramaGenres,
+		"all_genres":         cp.AllGenres,
+		"duration":           cp.Duration,
+		"kinopoisk_rating":   cp.KinopoiskRating,
+		"imdb_rating":        cp.ImdbRating,
+		"shikimori_rating":   cp.ShikimoriRating,
+		"mydramalist_rating": cp.MydramalistRating,
+		"actors":             cp.Actors,
+		"directors":          cp.Directors,
+		"producers":          cp.Producers,
+		"writers":            cp.Writers,
+		"composers":          cp.Composers,
+		"editors":            cp.Editors,
+		"designers":          cp.Designers,
+		"operators":          cp.Operators,
+		"rating_mpaa":        cp.RatingMPAA,
+		"minimal_age":        cp.MinimalAge,
+		"anime_kind":         cp.AnimeKind,
+		"mydramalist_tags":   cp.MydramalistTags,
+		"anime_status":       cp.AnimeStatus,
+		"drama_status":       cp.DramaStatus,
+		"all_status":         cp.AllStatus,
+		"anime_studios":      cp.AnimeStudios,
+		"anime_licensed_by":  cp.AnimeLicensedBy,
 	}
-	if cp.Year != "" {
-		params["year"] = cp.Year
+
+	for k, v := range fields {
+		if v != "" {
+			params[k] = v
+		}
 	}
+
 	if cp.TranslationID != 0 {
 		params["translation_id"] = strconv.Itoa(cp.TranslationID)
 	}
 	if cp.BlockTranslations != "" {
 		params["block_translations"] = strings.ReplaceAll(cp.BlockTranslations, " ", "")
 	}
-	if cp.TranslationType != "" {
-		params["translation_type"] = cp.TranslationType
-	}
-	if cp.HasField != "" {
-		params["has_field"] = cp.HasField
-	}
 	if cp.Lgbt != nil {
-		if *cp.Lgbt {
-			params["lgbt"] = "true"
-		} else {
-			params["lgbt"] = "false"
-		}
-	}
-	if cp.Sort != "" {
-		params["sort"] = cp.Sort
-	}
-
-	// Внешняя фильтрация
-	if cp.Genres != "" {
-		params["genres"] = cp.Genres
-	}
-	if cp.AnimeGenres != "" {
-		params["anime_genres"] = cp.AnimeGenres
-	}
-	if cp.DramaGenres != "" {
-		params["drama_genres"] = cp.DramaGenres
-	}
-	if cp.AllGenres != "" {
-		params["all_genres"] = cp.AllGenres
-	}
-	if cp.Duration != "" {
-		params["duration"] = cp.Duration
-	}
-	if cp.KinopoiskRating != "" {
-		params["kinopoisk_rating"] = cp.KinopoiskRating
-	}
-	if cp.ImdbRating != "" {
-		params["imdb_rating"] = cp.ImdbRating
-	}
-	if cp.ShikimoriRating != "" {
-		params["shikimori_rating"] = cp.ShikimoriRating
-	}
-	if cp.MydramalistRating != "" {
-		params["mydramalist_rating"] = cp.MydramalistRating
-	}
-	if cp.Actors != "" {
-		params["actors"] = cp.Actors
-	}
-	if cp.Directors != "" {
-		params["directors"] = cp.Directors
-	}
-	if cp.Producers != "" {
-		params["producers"] = cp.Producers
-	}
-	if cp.Writers != "" {
-		params["writers"] = cp.Writers
-	}
-	if cp.Composers != "" {
-		params["composers"] = cp.Composers
-	}
-	if cp.Editors != "" {
-		params["editors"] = cp.Editors
-	}
-	if cp.Designers != "" {
-		params["designers"] = cp.Designers
-	}
-	if cp.Operators != "" {
-		params["operators"] = cp.Operators
-	}
-	if cp.RatingMPAA != "" {
-		params["rating_mpaa"] = cp.RatingMPAA
-	}
-	if cp.MinimalAge != "" {
-		params["minimal_age"] = cp.MinimalAge
-	}
-	if cp.AnimeKind != "" {
-		params["anime_kind"] = cp.AnimeKind
-	}
-	if cp.MydramalistTags != "" {
-		params["mydramalist_tags"] = cp.MydramalistTags
-	}
-	if cp.AnimeStatus != "" {
-		params["anime_status"] = cp.AnimeStatus
-	}
-	if cp.DramaStatus != "" {
-		params["drama_status"] = cp.DramaStatus
-	}
-	if cp.AllStatus != "" {
-		params["all_status"] = cp.AllStatus
-	}
-	if cp.AnimeStudios != "" {
-		params["anime_studios"] = cp.AnimeStudios
-	}
-	if cp.AnimeLicensedBy != "" {
-		params["anime_licensed_by"] = cp.AnimeLicensedBy
+		params["lgbt"] = strconv.FormatBool(*cp.Lgbt)
 	}
 
 	return params
