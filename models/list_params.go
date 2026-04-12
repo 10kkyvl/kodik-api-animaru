@@ -72,168 +72,78 @@ type ListParams struct {
 func (lp *ListParams) ToMap() map[string]string {
 	params := make(map[string]string)
 
+	fields := map[string]string{
+		"sort":               lp.Sort,
+		"order":              lp.Order,
+		"types":              lp.Types,
+		"year":               lp.Year,
+		"block_translations": lp.BlockTranslations,
+		"translation_type":   lp.TranslationType,
+		"has_field":          lp.HasField,
+		"not_blocked_in":     lp.NotBlockedIn,
+		"countries":          lp.Countries,
+		"genres":             lp.Genres,
+		"anime_genres":       lp.AnimeGenres,
+		"drama_genres":       lp.DramaGenres,
+		"all_genres":         lp.AllGenres,
+		"duration":           lp.Duration,
+		"kinopoisk_rating":   lp.KinopoiskRating,
+		"imdb_rating":        lp.ImdbRating,
+		"shikimori_rating":   lp.ShikimoriRating,
+		"mydramalist_rating": lp.MydramalistRating,
+		"actors":             lp.Actors,
+		"directors":          lp.Directors,
+		"producers":          lp.Producers,
+		"writers":            lp.Writers,
+		"composers":          lp.Composers,
+		"editors":            lp.Editors,
+		"designers":          lp.Designers,
+		"operators":          lp.Operators,
+		"rating_mpaa":        lp.RatingMPAA,
+		"minimal_age":        lp.MinimalAge,
+		"anime_kind":         lp.AnimeKind,
+		"mydramalist_tags":   lp.MydramalistTags,
+		"anime_status":       lp.AnimeStatus,
+		"drama_status":       lp.DramaStatus,
+		"all_status":         lp.AllStatus,
+		"anime_studios":      lp.AnimeStudios,
+		"anime_licensed_by":  lp.AnimeLicensedBy,
+	}
+
+	for k, v := range fields {
+		if v != "" {
+			if k == "not_blocked_in" || k == "block_translations" {
+				params[k] = strings.ReplaceAll(v, " ", "")
+			} else {
+				params[k] = v
+			}
+		}
+	}
+
 	if lp.Limit != 0 {
 		params["limit"] = strconv.Itoa(lp.Limit)
-	}
-	if lp.Sort != "" {
-		params["sort"] = lp.Sort
-	}
-	if lp.Order != "" {
-		params["order"] = lp.Order
-	}
-	if lp.Types != "" {
-		params["types"] = lp.Types
-	}
-	if lp.Year != "" {
-		params["year"] = lp.Year
 	}
 	if lp.TranslationID != 0 {
 		params["translation_id"] = strconv.Itoa(lp.TranslationID)
 	}
-	if lp.BlockTranslations != "" {
-		params["block_translations"] = lp.BlockTranslations
-	}
-	if lp.TranslationType != "" {
-		params["translation_type"] = lp.TranslationType
-	}
-	if lp.HasField != "" {
-		params["has_field"] = lp.HasField
-	}
+
+	// Булевые значения
 	if lp.Camrip != nil {
-		if *lp.Camrip {
-			params["camrip"] = "true"
-		} else {
-			params["camrip"] = "false"
-		}
+		params["camrip"] = strconv.FormatBool(*lp.Camrip)
 	}
 	if lp.Lgbt != nil {
-		if *lp.Lgbt {
-			params["lgbt"] = "true"
-		} else {
-			params["lgbt"] = "false"
-		}
-	}
-	// Параметры сериалов (флаги всегда включаются, даже если false)
-	if lp.WithSeasons {
-		params["with_seasons"] = "true"
-	} else {
-		params["with_seasons"] = "false"
-	}
-	if lp.WithEpisodes {
-		params["with_episodes"] = "true"
-	} else {
-		params["with_episodes"] = "false"
-	}
-	if lp.WithEpisodesData {
-		params["with_episodes_data"] = "true"
-	} else {
-		params["with_episodes_data"] = "false"
-	}
-	if lp.WithPageLinks {
-		params["with_page_links"] = "true"
-	} else {
-		params["with_page_links"] = "false"
-	}
-	if lp.NotBlockedIn != "" {
-		params["not_blocked_in"] = strings.ReplaceAll(lp.NotBlockedIn, " ", "")
+		params["lgbt"] = strconv.FormatBool(*lp.Lgbt)
 	}
 	if lp.NotBlockedForMe != nil {
-		if *lp.NotBlockedForMe {
-			params["not_blocked_for_me"] = "true"
-		} else {
-			params["not_blocked_for_me"] = "false"
-		}
+		params["not_blocked_for_me"] = strconv.FormatBool(*lp.NotBlockedForMe)
 	}
-	// Внешняя фильтрация
-	if lp.WithMaterialData {
-		params["with_material_data"] = "true"
-	} else {
-		params["with_material_data"] = "false"
-	}
-	if lp.Countries != "" {
-		params["countries"] = lp.Countries
-	}
-	if lp.Genres != "" {
-		params["genres"] = lp.Genres
-	}
-	if lp.AnimeGenres != "" {
-		params["anime_genres"] = lp.AnimeGenres
-	}
-	if lp.DramaGenres != "" {
-		params["drama_genres"] = lp.DramaGenres
-	}
-	if lp.AllGenres != "" {
-		params["all_genres"] = lp.AllGenres
-	}
-	// Дополнительные параметры
-	if lp.Duration != "" {
-		params["duration"] = lp.Duration
-	}
-	if lp.KinopoiskRating != "" {
-		params["kinopoisk_rating"] = lp.KinopoiskRating
-	}
-	if lp.ImdbRating != "" {
-		params["imdb_rating"] = lp.ImdbRating
-	}
-	if lp.ShikimoriRating != "" {
-		params["shikimori_rating"] = lp.ShikimoriRating
-	}
-	if lp.MydramalistRating != "" {
-		params["mydramalist_rating"] = lp.MydramalistRating
-	}
-	// Персоналии
-	if lp.Actors != "" {
-		params["actors"] = lp.Actors
-	}
-	if lp.Directors != "" {
-		params["directors"] = lp.Directors
-	}
-	if lp.Producers != "" {
-		params["producers"] = lp.Producers
-	}
-	if lp.Writers != "" {
-		params["writers"] = lp.Writers
-	}
-	if lp.Composers != "" {
-		params["composers"] = lp.Composers
-	}
-	if lp.Editors != "" {
-		params["editors"] = lp.Editors
-	}
-	if lp.Designers != "" {
-		params["designers"] = lp.Designers
-	}
-	if lp.Operators != "" {
-		params["operators"] = lp.Operators
-	}
-	// Прочее
-	if lp.RatingMPAA != "" {
-		params["rating_mpaa"] = lp.RatingMPAA
-	}
-	if lp.MinimalAge != "" {
-		params["minimal_age"] = lp.MinimalAge
-	}
-	if lp.AnimeKind != "" {
-		params["anime_kind"] = lp.AnimeKind
-	}
-	if lp.MydramalistTags != "" {
-		params["mydramalist_tags"] = lp.MydramalistTags
-	}
-	if lp.AnimeStatus != "" {
-		params["anime_status"] = lp.AnimeStatus
-	}
-	if lp.DramaStatus != "" {
-		params["drama_status"] = lp.DramaStatus
-	}
-	if lp.AllStatus != "" {
-		params["all_status"] = lp.AllStatus
-	}
-	if lp.AnimeStudios != "" {
-		params["anime_studios"] = lp.AnimeStudios
-	}
-	if lp.AnimeLicensedBy != "" {
-		params["anime_licensed_by"] = lp.AnimeLicensedBy
-	}
+
+	// Флаги (явная передача)
+	params["with_seasons"] = strconv.FormatBool(lp.WithSeasons)
+	params["with_episodes"] = strconv.FormatBool(lp.WithEpisodes)
+	params["with_episodes_data"] = strconv.FormatBool(lp.WithEpisodesData)
+	params["with_page_links"] = strconv.FormatBool(lp.WithPageLinks)
+	params["with_material_data"] = strconv.FormatBool(lp.WithMaterialData)
 
 	return params
 }
