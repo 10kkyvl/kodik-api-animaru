@@ -9,7 +9,20 @@ import (
 )
 
 func TestQualities(t *testing.T) {
-	fixture := `{"time":"1ms","total":2,"results":[{"title":"720p", "count": 5000},{"title":"1080p", "count": 2000}]}`
+	fixture := `{
+  "time": "5ms",
+  "total": 2,
+  "results": [
+    {
+      "title": "WEB-DLRip 720p",
+      "count": 545
+    },
+    {
+      "title": "WEB-DLRip",
+      "count": 11
+    }
+  ]
+}`
 	c := newTestClient(t, func(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("Content-Type", "application/json")
 		w.Write([]byte(fixture))
@@ -26,23 +39,32 @@ func TestQualities(t *testing.T) {
 	if len(result.Results) != 2 {
 		t.Errorf("expected 2 results, got %d", len(result.Results))
 	}
-	if result.Results[0].Title != "720p" {
-		t.Errorf("expected first result 720p, got %s", result.Results[0].Title)
+	if result.Results[0].Title != "WEB-DLRip 720p" {
+		t.Errorf("expected first result WEB-DLRip 720p, got %s", result.Results[0].Title)
 	}
 }
 
 func TestQualities_WithParams(t *testing.T) {
-	fixture := `{"time":"1ms","total":1,"results":[{"title":"720p","count":5000}]}`
+	fixture := `{
+  "time": "5ms",
+  "total": 1,
+  "results": [
+    {
+      "title": "WEB-DLRip 720p",
+      "count": 545
+    }
+  ]
+}`
 
 	c := newTestClient(t, func(w http.ResponseWriter, r *http.Request) {
-		if r.URL.Query().Get("types") != "foreign-movie" {
-			t.Errorf("expected types=foreign-movie, got %q", r.URL.Query().Get("types"))
+		if r.URL.Query().Get("types") != "anime-serial" {
+			t.Errorf("expected types=anime-serial, got %q", r.URL.Query().Get("types"))
 		}
 		w.Header().Set("Content-Type", "application/json")
 		w.Write([]byte(fixture))
 	})
 
-	result, err := api.Qualities(c, &models.QualitiesParams{Types: "foreign-movie"})
+	result, err := api.Qualities(c, &models.QualitiesParams{Types: "anime-serial"})
 
 	if err != nil {
 		t.Fatalf("unexpected error: %v", err)

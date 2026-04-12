@@ -9,7 +9,22 @@ import (
 )
 
 func TestTranslations(t *testing.T) {
-	fixture := `{"time":"1ms","total":2,"results":[{"id":1, "title": "SoftBox", "count": 1000},{"id":2, "title": "AniLibria", "count": 500}]}`
+	fixture := `{
+  "time": "5ms",
+  "total": 2,
+  "results": [
+    {
+      "id": 735,
+      "title": "2x2",
+      "count": 26
+    },
+    {
+      "id": 824,
+      "title": "3df voice",
+      "count": 16
+    }
+  ]
+}`
 	c := newTestClient(t, func(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("Content-Type", "application/json")
 		w.Write([]byte(fixture))
@@ -26,13 +41,23 @@ func TestTranslations(t *testing.T) {
 	if len(result.Results) != 2 {
 		t.Errorf("expected 2 results, got %d", len(result.Results))
 	}
-	if result.Results[0].Title != "SoftBox" {
-		t.Errorf("expected first result SoftBox, got %s", result.Results[0].Title)
+	if result.Results[0].Title != "2x2" {
+		t.Errorf("expected first result 2x2, got %s", result.Results[0].Title)
 	}
 }
 
 func TestTranslations_WithParams(t *testing.T) {
-	fixture := `{"time":"1ms","total":1,"results":[{"id":1,"title":"SoftBox","count":1000}]}`
+	fixture := `{
+  "time": "5ms",
+  "total": 1,
+  "results": [
+    {
+      "id": 735,
+      "title": "2x2",
+      "count": 26
+    }
+  ]
+}`
 
 	c := newTestClient(t, func(w http.ResponseWriter, r *http.Request) {
 		if r.URL.Query().Get("types") != "anime-serial" {
