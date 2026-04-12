@@ -18,7 +18,7 @@ func TestList(t *testing.T) {
     {
       "id": "serial-452654",
       "type": "anime",
-      "link": "http://kodikplayer.com/serial/4309/bc6def495a31545c7f648f7fb68d22a8/720p",
+      "link": "https://example.com/serial/mock-uuid/720p",
       "title": "Игра престолов",
       "title_orig": "Game of Thrones",
       "translation": {

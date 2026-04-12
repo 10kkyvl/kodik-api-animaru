@@ -16,7 +16,7 @@ func TestSearch(t *testing.T) {
     {
       "id": "movie-452654",
       "type": "foreign-movie",
-      "link": "http://kodikplayer.com/video/93/2fc1d3b9759726b2bc5b104b225d2b4a/720p",
+      "link": "https://example.com/mock-link/720p",
       "title": "Аватар",
       "title_orig": "Avatar",
       "translation": {
@@ -60,7 +60,7 @@ func TestSearch_WithFullParams(t *testing.T) {
     {
       "id": "serial-452654",
       "type": "anime",
-      "link": "http://kodikplayer.com/serial/4309/bc6def495a31545c7f648f7fb68d22a8/720p",
+      "link": "https://example.com/serial/mock-uuid/720p",
       "title": "Игра престолов",
       "title_orig": "Game of Thrones",
       "translation": {
