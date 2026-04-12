@@ -50,111 +50,54 @@ type YearsParams struct {
 func (yp *YearsParams) ToMap() map[string]string {
 	params := make(map[string]string)
 
-	if yp.Types != "" {
-		params["types"] = yp.Types
+	fields := map[string]string{
+		"types":              yp.Types,
+		"translation_type":   yp.TranslationType,
+		"has_field":          yp.HasField,
+		"sort":               yp.Sort,
+		"countries":          yp.Countries,
+		"genres":             yp.Genres,
+		"anime_genres":       yp.AnimeGenres,
+		"drama_genres":       yp.DramaGenres,
+		"all_genres":         yp.AllGenres,
+		"duration":           yp.Duration,
+		"kinopoisk_rating":   yp.KinopoiskRating,
+		"imdb_rating":        yp.ImdbRating,
+		"shikimori_rating":   yp.ShikimoriRating,
+		"mydramalist_rating": yp.MydramalistRating,
+		"actors":             yp.Actors,
+		"directors":          yp.Directors,
+		"producers":          yp.Producers,
+		"writers":            yp.Writers,
+		"composers":          yp.Composers,
+		"editors":            yp.Editors,
+		"designers":          yp.Designers,
+		"operators":          yp.Operators,
+		"rating_mpaa":        yp.RatingMPAA,
+		"minimal_age":        yp.MinimalAge,
+		"anime_kind":         yp.AnimeKind,
+		"mydramalist_tags":   yp.MydramalistTags,
+		"anime_status":       yp.AnimeStatus,
+		"drama_status":       yp.DramaStatus,
+		"all_status":         yp.AllStatus,
+		"anime_studios":      yp.AnimeStudios,
+		"anime_licensed_by":  yp.AnimeLicensedBy,
 	}
+
+	for k, v := range fields {
+		if v != "" {
+			params[k] = v
+		}
+	}
+
 	if yp.TranslationID != 0 {
 		params["translation_id"] = strconv.Itoa(yp.TranslationID)
 	}
 	if yp.BlockTranslations != "" {
 		params["block_translations"] = strings.ReplaceAll(yp.BlockTranslations, " ", "")
 	}
-	if yp.TranslationType != "" {
-		params["translation_type"] = yp.TranslationType
-	}
-	if yp.HasField != "" {
-		params["has_field"] = yp.HasField
-	}
 	if yp.Lgbt != nil {
-		if *yp.Lgbt {
-			params["lgbt"] = "true"
-		} else {
-			params["lgbt"] = "false"
-		}
-	}
-	if yp.Sort != "" {
-		params["sort"] = yp.Sort
-	}
-	if yp.Countries != "" {
-		params["countries"] = yp.Countries
-	}
-	if yp.Genres != "" {
-		params["genres"] = yp.Genres
-	}
-	if yp.AnimeGenres != "" {
-		params["anime_genres"] = yp.AnimeGenres
-	}
-	if yp.DramaGenres != "" {
-		params["drama_genres"] = yp.DramaGenres
-	}
-	if yp.AllGenres != "" {
-		params["all_genres"] = yp.AllGenres
-	}
-	if yp.Duration != "" {
-		params["duration"] = yp.Duration
-	}
-	if yp.KinopoiskRating != "" {
-		params["kinopoisk_rating"] = yp.KinopoiskRating
-	}
-	if yp.ImdbRating != "" {
-		params["imdb_rating"] = yp.ImdbRating
-	}
-	if yp.ShikimoriRating != "" {
-		params["shikimori_rating"] = yp.ShikimoriRating
-	}
-	if yp.MydramalistRating != "" {
-		params["mydramalist_rating"] = yp.MydramalistRating
-	}
-	if yp.Actors != "" {
-		params["actors"] = yp.Actors
-	}
-	if yp.Directors != "" {
-		params["directors"] = yp.Directors
-	}
-	if yp.Producers != "" {
-		params["producers"] = yp.Producers
-	}
-	if yp.Writers != "" {
-		params["writers"] = yp.Writers
-	}
-	if yp.Composers != "" {
-		params["composers"] = yp.Composers
-	}
-	if yp.Editors != "" {
-		params["editors"] = yp.Editors
-	}
-	if yp.Designers != "" {
-		params["designers"] = yp.Designers
-	}
-	if yp.Operators != "" {
-		params["operators"] = yp.Operators
-	}
-	if yp.RatingMPAA != "" {
-		params["rating_mpaa"] = yp.RatingMPAA
-	}
-	if yp.MinimalAge != "" {
-		params["minimal_age"] = yp.MinimalAge
-	}
-	if yp.AnimeKind != "" {
-		params["anime_kind"] = yp.AnimeKind
-	}
-	if yp.MydramalistTags != "" {
-		params["mydramalist_tags"] = yp.MydramalistTags
-	}
-	if yp.AnimeStatus != "" {
-		params["anime_status"] = yp.AnimeStatus
-	}
-	if yp.DramaStatus != "" {
-		params["drama_status"] = yp.DramaStatus
-	}
-	if yp.AllStatus != "" {
-		params["all_status"] = yp.AllStatus
-	}
-	if yp.AnimeStudios != "" {
-		params["anime_studios"] = yp.AnimeStudios
-	}
-	if yp.AnimeLicensedBy != "" {
-		params["anime_licensed_by"] = yp.AnimeLicensedBy
+		params["lgbt"] = strconv.FormatBool(*yp.Lgbt)
 	}
 
 	return params
