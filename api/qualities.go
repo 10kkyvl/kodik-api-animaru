@@ -6,10 +6,13 @@ import (
 )
 
 // Qualities выполняет запрос к эндпоинту /qualities/v2 API Kodik, используя параметры models.QualitiesParams.
-func Qualities(qp *models.QualitiesParams) (*models.QualitiesResponse, error) {
+func Qualities(c *client.Client, qp *models.QualitiesParams) (*models.QualitiesResponse, error) {
 	var response models.QualitiesResponse
-	params := qp.ToMap()
-	err := client.DefaultClient.DoRequest("GET", "/qualities/v2", params, &response)
+	var params map[string]string
+	if qp != nil {
+		params = qp.ToMap()
+	}
+	err := c.DoRequest("GET", "/qualities/v2", params, &response)
 	if err != nil {
 		return nil, err
 	}

@@ -6,10 +6,13 @@ import (
 )
 
 // Years выполняет запрос к эндпоинту /years API Kodik с параметрами models.YearsParams.
-func Years(yp *models.YearsParams) (*models.YearsResponse, error) {
+func Years(c *client.Client, yp *models.YearsParams) (*models.YearsResponse, error) {
 	var response models.YearsResponse
-	params := yp.ToMap()
-	err := client.DefaultClient.DoRequest("GET", "/years", params, &response)
+	var params map[string]string
+	if yp != nil {
+		params = yp.ToMap()
+	}
+	err := c.DoRequest("GET", "/years", params, &response)
 	if err != nil {
 		return nil, err
 	}

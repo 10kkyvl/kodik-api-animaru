@@ -6,10 +6,13 @@ import (
 )
 
 // Genres выполняет запрос к эндпоинту /genres API Kodik с параметрами models.GenresParams.
-func Genres(gp *models.GenresParams) (*models.GenresResponse, error) {
+func Genres(c *client.Client, gp *models.GenresParams) (*models.GenresResponse, error) {
 	var response models.GenresResponse
-	params := gp.ToMap()
-	err := client.DefaultClient.DoRequest("GET", "/genres", params, &response)
+	var params map[string]string
+	if gp != nil {
+		params = gp.ToMap()
+	}
+	err := c.DoRequest("GET", "/genres", params, &response)
 	if err != nil {
 		return nil, err
 	}

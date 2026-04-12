@@ -6,10 +6,13 @@ import (
 )
 
 // List выполняет запрос к эндпоинту /list API Kodik, используя параметры, заданные в структуре models.ListParams.
-func List(lp *models.ListParams) (*models.ListResponse, error) {
+func List(c *client.Client, lp *models.ListParams) (*models.ListResponse, error) {
 	var response models.ListResponse
-	params := lp.ToMap()
-	err := client.DefaultClient.DoRequest("GET", "/list", params, &response)
+	var params map[string]string
+	if lp != nil {
+		params = lp.ToMap()
+	}
+	err := c.DoRequest("GET", "/list", params, &response)
 	if err != nil {
 		return nil, err
 	}
