@@ -81,207 +81,95 @@ type SearchParams struct {
 func (sp *SearchParams) ToMap() map[string]string {
 	params := make(map[string]string)
 
-	if sp.Title != "" {
-		params["title"] = sp.Title
+	fields := map[string]string{
+		"title":                        sp.Title,
+		"title_orig":                   sp.TitleOrig,
+		"id":                           sp.ID,
+		"player_link":                  sp.PlayerLink,
+		"imdb_id":                      sp.ImdbID,
+		"mdl_id":                       sp.MdlID,
+		"worldart_link":                sp.WorldartLink,
+		"types":                        sp.Types,
+		"year":                         sp.Year,
+		"translation_type":             sp.TranslationType,
+		"has_field":                    sp.HasField,
+		"prioritize_translations":      sp.PrioritizeTranslations,
+		"unprioritize_translations":    sp.UnprioritizeTranslations,
+		"prioritize_translation_type":  sp.PrioritizeTranslationType,
+		"block_translations":           sp.BlockTranslations,
+		"not_blocked_in":               sp.NotBlockedIn,
+		"countries":                    sp.Countries,
+		"genres":                       sp.Genres,
+		"duration":                     sp.Duration,
+		"kinopoisk_rating":             sp.KinopoiskRating,
+		"imdb_rating":                  sp.ImdbRating,
+		"shikimori_rating":             sp.ShikimoriRating,
+		"mydramalist_rating":           sp.MydramalistRating,
+		"actors":                       sp.Actors,
+		"directors":                    sp.Directors,
+		"producers":                    sp.Producers,
+		"writers":                      sp.Writers,
+		"composers":                    sp.Composers,
+		"editors":                      sp.Editors,
+		"designers":                    sp.Designers,
+		"operators":                    sp.Operators,
+		"rating_mpaa":                  sp.RatingMPAA,
+		"minimal_age":                  sp.MinimalAge,
+		"anime_kind":                   sp.AnimeKind,
+		"mydramalist_tags":             sp.MydramalistTags,
+		"anime_status":                 sp.AnimeStatus,
+		"drama_status":                 sp.DramaStatus,
+		"all_status":                   sp.AllStatus,
+		"anime_studios":                sp.AnimeStudios,
+		"anime_licensed_by":            sp.AnimeLicensedBy,
 	}
-	if sp.TitleOrig != "" {
-		params["title_orig"] = sp.TitleOrig
-	}
-	// Булевые значения передаются всегда явно
-	if sp.Strict {
-		params["strict"] = "true"
-	} else {
-		params["strict"] = "false"
-	}
-	if sp.FullMatch {
-		params["full_match"] = "true"
-	} else {
-		params["full_match"] = "false"
-	}
-	if sp.ID != "" {
-		params["id"] = sp.ID
-	}
-	if sp.PlayerLink != "" {
-		params["player_link"] = sp.PlayerLink
-	}
-	if sp.KinopoiskID != 0 {
-		params["kinopoisk_id"] = strconv.Itoa(sp.KinopoiskID)
-	}
-	if sp.ImdbID != "" {
-		params["imdb_id"] = sp.ImdbID
-	}
-	if sp.MdlID != "" {
-		params["mdl_id"] = sp.MdlID
-	}
-	if sp.WorldartAnimationID != 0 {
-		params["worldart_animation_id"] = strconv.Itoa(sp.WorldartAnimationID)
-	}
-	if sp.WorldartCinemaID != 0 {
-		params["worldart_cinema_id"] = strconv.Itoa(sp.WorldartCinemaID)
-	}
-	if sp.WorldartLink != "" {
-		params["worldart_link"] = sp.WorldartLink
-	}
-	if sp.ShikimoriID != 0 {
-		params["shikimori_id"] = strconv.Itoa(sp.ShikimoriID)
-	}
-	if sp.Limit != 0 {
-		params["limit"] = strconv.Itoa(sp.Limit)
-	}
-	if sp.Types != "" {
-		params["types"] = sp.Types
-	}
-	if sp.Year != "" {
-		params["year"] = sp.Year
-	}
-	if sp.TranslationID != 0 {
-		params["translation_id"] = strconv.Itoa(sp.TranslationID)
-	}
-	if sp.TranslationType != "" {
-		params["translation_type"] = sp.TranslationType
-	}
-	if sp.HasField != "" {
-		params["has_field"] = sp.HasField
-	}
-	if sp.PrioritizeTranslations != "" {
-		params["prioritize_translations"] = sp.PrioritizeTranslations
-	}
-	if sp.UnprioritizeTranslations != "" {
-		params["unprioritize_translations"] = sp.UnprioritizeTranslations
-	}
-	if sp.PrioritizeTranslationType != "" {
-		params["prioritize_translation_type"] = sp.PrioritizeTranslationType
-	}
-	if sp.BlockTranslations != "" {
-		params["block_translations"] = sp.BlockTranslations
-	}
-	if sp.Camrip != nil {
-		if *sp.Camrip {
-			params["camrip"] = "true"
-		} else {
-			params["camrip"] = "false"
+
+	for k, v := range fields {
+		if v != "" {
+			if k == "not_blocked_in" {
+				params[k] = strings.ReplaceAll(v, " ", "")
+			} else {
+				params[k] = v
+			}
 		}
+	}
+
+	// Целочисленные поля
+	intFields := map[string]int{
+		"kinopoisk_id":           sp.KinopoiskID,
+		"worldart_animation_id": sp.WorldartAnimationID,
+		"worldart_cinema_id":    sp.WorldartCinemaID,
+		"shikimori_id":          sp.ShikimoriID,
+		"limit":                 sp.Limit,
+		"translation_id":        sp.TranslationID,
+		"season":                sp.Season,
+		"episode":               sp.Episode,
+	}
+
+	for k, v := range intFields {
+		if v != 0 {
+			params[k] = strconv.Itoa(v)
+		}
+	}
+
+	// Булевые значения (явная передача)
+	params["strict"] = strconv.FormatBool(sp.Strict)
+	params["full_match"] = strconv.FormatBool(sp.FullMatch)
+	params["with_seasons"] = strconv.FormatBool(sp.WithSeasons)
+	params["with_episodes"] = strconv.FormatBool(sp.WithEpisodes)
+	params["with_episodes_data"] = strconv.FormatBool(sp.WithEpisodesData)
+	params["with_page_links"] = strconv.FormatBool(sp.WithPageLinks)
+	params["with_material_data"] = strconv.FormatBool(sp.WithMaterialData)
+
+	// Указатели на булевые значения
+	if sp.Camrip != nil {
+		params["camrip"] = strconv.FormatBool(*sp.Camrip)
 	}
 	if sp.Lgbt != nil {
-		if *sp.Lgbt {
-			params["lgbt"] = "true"
-		} else {
-			params["lgbt"] = "false"
-		}
-	}
-	if sp.WithSeasons {
-		params["with_seasons"] = "true"
-	} else {
-		params["with_seasons"] = "false"
-	}
-	if sp.Season != 0 {
-		params["season"] = strconv.Itoa(sp.Season)
-	}
-	if sp.WithEpisodes {
-		params["with_episodes"] = "true"
-	} else {
-		params["with_episodes"] = "false"
-	}
-	if sp.WithEpisodesData {
-		params["with_episodes_data"] = "true"
-	} else {
-		params["with_episodes_data"] = "false"
-	}
-	if sp.Episode != 0 {
-		params["episode"] = strconv.Itoa(sp.Episode)
-	}
-	if sp.WithPageLinks {
-		params["with_page_links"] = "true"
-	} else {
-		params["with_page_links"] = "false"
-	}
-	if sp.NotBlockedIn != "" {
-		// Удаляем пробелы и оставляем список через запятую
-		params["not_blocked_in"] = strings.ReplaceAll(sp.NotBlockedIn, " ", "")
+		params["lgbt"] = strconv.FormatBool(*sp.Lgbt)
 	}
 	if sp.NotBlockedForMe != nil {
-		if *sp.NotBlockedForMe {
-			params["not_blocked_for_me"] = "true"
-		} else {
-			params["not_blocked_for_me"] = "false"
-		}
-	}
-	if sp.WithMaterialData {
-		params["with_material_data"] = "true"
-	} else {
-		params["with_material_data"] = "false"
-	}
-	if sp.Countries != "" {
-		params["countries"] = sp.Countries
-	}
-	if sp.Genres != "" {
-		params["genres"] = sp.Genres
-	}
-	if sp.Duration != "" {
-		params["duration"] = sp.Duration
-	}
-	if sp.KinopoiskRating != "" {
-		params["kinopoisk_rating"] = sp.KinopoiskRating
-	}
-	if sp.ImdbRating != "" {
-		params["imdb_rating"] = sp.ImdbRating
-	}
-	if sp.ShikimoriRating != "" {
-		params["shikimori_rating"] = sp.ShikimoriRating
-	}
-	if sp.MydramalistRating != "" {
-		params["mydramalist_rating"] = sp.MydramalistRating
-	}
-	if sp.Actors != "" {
-		params["actors"] = sp.Actors
-	}
-	if sp.Directors != "" {
-		params["directors"] = sp.Directors
-	}
-	if sp.Producers != "" {
-		params["producers"] = sp.Producers
-	}
-	if sp.Writers != "" {
-		params["writers"] = sp.Writers
-	}
-	if sp.Composers != "" {
-		params["composers"] = sp.Composers
-	}
-	if sp.Editors != "" {
-		params["editors"] = sp.Editors
-	}
-	if sp.Designers != "" {
-		params["designers"] = sp.Designers
-	}
-	if sp.Operators != "" {
-		params["operators"] = sp.Operators
-	}
-	if sp.RatingMPAA != "" {
-		params["rating_mpaa"] = sp.RatingMPAA
-	}
-	if sp.MinimalAge != "" {
-		params["minimal_age"] = sp.MinimalAge
-	}
-	if sp.AnimeKind != "" {
-		params["anime_kind"] = sp.AnimeKind
-	}
-	if sp.MydramalistTags != "" {
-		params["mydramalist_tags"] = sp.MydramalistTags
-	}
-	if sp.AnimeStatus != "" {
-		params["anime_status"] = sp.AnimeStatus
-	}
-	if sp.DramaStatus != "" {
-		params["drama_status"] = sp.DramaStatus
-	}
-	if sp.AllStatus != "" {
-		params["all_status"] = sp.AllStatus
-	}
-	if sp.AnimeStudios != "" {
-		params["anime_studios"] = sp.AnimeStudios
-	}
-	if sp.AnimeLicensedBy != "" {
-		params["anime_licensed_by"] = sp.AnimeLicensedBy
+		params["not_blocked_for_me"] = strconv.FormatBool(*sp.NotBlockedForMe)
 	}
 
 	return params
