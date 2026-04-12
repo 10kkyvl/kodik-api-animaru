@@ -9,7 +9,20 @@ import (
 )
 
 func TestCountries(t *testing.T) {
-	fixture := `{"time":"1ms","total":3,"results":[{"title":"Japan", "count": 620},{"title":"USA", "count": 135},{"title":"Korea", "count": 120}]}`
+	fixture := `{
+  "time": "5ms",
+  "total": 30590,
+  "results": [
+    {
+      "title": "Австралия",
+      "count": 620
+    },
+    {
+      "title": "Аргентина",
+      "count": 112
+    }
+  ]
+}`
 	c := newTestClient(t, func(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("Content-Type", "application/json")
 		w.Write([]byte(fixture))
@@ -20,30 +33,38 @@ func TestCountries(t *testing.T) {
 	if err != nil {
 		t.Fatalf("unexpected error: %v", err)
 	}
-	if result.Total != 3 {
-		t.Errorf("expected Total=3, got %d", result.Total)
+	if result.Total != 30590 {
+		t.Errorf("expected Total=30590, got %d", result.Total)
 	}
-	if len(result.Results) != 3 {
-		t.Errorf("expected 3 results, got %d", len(result.Results))
+	if len(result.Results) != 2 {
+		t.Errorf("expected 2 results, got %d", len(result.Results))
 	}
-	if result.Results[0].Title != "Japan" {
-		t.Errorf("expected first result Japan, got %s", result.Results[0].Title)
+	if result.Results[0].Title != "Австралия" {
+		t.Errorf("expected first result Австралия, got %s", result.Results[0].Title)
 	}
-	_ = c
 }
 
 func TestCountries_WithParams(t *testing.T) {
-	fixture := `{"time":"1ms","total":1,"results":[{"title":"Japan","count":620}]}`
+	fixture := `{
+  "time": "5ms",
+  "total": 1,
+  "results": [
+    {
+      "title": "Австралия",
+      "count": 620
+    }
+  ]
+}`
 
 	c := newTestClient(t, func(w http.ResponseWriter, r *http.Request) {
-		if r.URL.Query().Get("types") != "anime" {
-			t.Errorf("expected types=anime, got %q", r.URL.Query().Get("types"))
+		if r.URL.Query().Get("types") != "anime-serial" {
+			t.Errorf("expected types=anime-serial, got %q", r.URL.Query().Get("types"))
 		}
 		w.Header().Set("Content-Type", "application/json")
 		w.Write([]byte(fixture))
 	})
 
-	result, err := api.Countries(c, &models.CountriesParams{Types: "anime"})
+	result, err := api.Countries(c, &models.CountriesParams{Types: "anime-serial"})
 
 	if err != nil {
 		t.Fatalf("unexpected error: %v", err)

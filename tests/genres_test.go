@@ -9,7 +9,20 @@ import (
 )
 
 func TestGenres(t *testing.T) {
-	fixture := `{"time":"1ms","total":2,"results":[{"title":"Action", "count": 100},{"title":"Comedy", "count": 80}]}`
+	fixture := `{
+  "time": "5ms",
+  "total": 30590,
+  "results": [
+    {
+      "title": "мультфильм",
+      "count": 620
+    },
+    {
+      "title": "боевик",
+      "count": 112
+    }
+  ]
+}`
 	c := newTestClient(t, func(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("Content-Type", "application/json")
 		w.Write([]byte(fixture))
@@ -20,29 +33,38 @@ func TestGenres(t *testing.T) {
 	if err != nil {
 		t.Fatalf("unexpected error: %v", err)
 	}
-	if result.Total != 2 {
-		t.Errorf("expected Total=2, got %d", result.Total)
+	if result.Total != 30590 {
+		t.Errorf("expected Total=30590, got %d", result.Total)
 	}
 	if len(result.Results) != 2 {
 		t.Errorf("expected 2 results, got %d", len(result.Results))
 	}
-	if result.Results[0].Title != "Action" {
-		t.Errorf("expected first result Action, got %s", result.Results[0].Title)
+	if result.Results[0].Title != "мультфильм" {
+		t.Errorf("expected first result мультфильм, got %s", result.Results[0].Title)
 	}
 }
 
 func TestGenres_WithParams(t *testing.T) {
-	fixture := `{"time":"1ms","total":1,"results":[{"title":"Action","count":100}]}`
+	fixture := `{
+  "time": "5ms",
+  "total": 1,
+  "results": [
+    {
+      "title": "мультфильм",
+      "count": 620
+    }
+  ]
+}`
 
 	c := newTestClient(t, func(w http.ResponseWriter, r *http.Request) {
-		if r.URL.Query().Get("types") != "anime" {
-			t.Errorf("expected types=anime, got %q", r.URL.Query().Get("types"))
+		if r.URL.Query().Get("types") != "anime-serial" {
+			t.Errorf("expected types=anime-serial, got %q", r.URL.Query().Get("types"))
 		}
 		w.Header().Set("Content-Type", "application/json")
 		w.Write([]byte(fixture))
 	})
 
-	result, err := api.Genres(c, &models.GenresParams{Types: "anime"})
+	result, err := api.Genres(c, &models.GenresParams{Types: "anime-serial"})
 
 	if err != nil {
 		t.Fatalf("unexpected error: %v", err)
