@@ -7,10 +7,13 @@ import (
 
 // Translations выполняет запрос к эндпоинту /translations/v2 API Kodik,
 // используя параметры, заданные в структуре models.TranslationsParams.
-func Translations(tp *models.TranslationsParams) (*models.TranslationsResponse, error) {
+func Translations(c *client.Client, tp *models.TranslationsParams) (*models.TranslationsResponse, error) {
 	var response models.TranslationsResponse
-	params := tp.ToMap()
-	err := client.DefaultClient.DoRequest("GET", "/translations/v2", params, &response)
+	var params map[string]string
+	if tp != nil {
+		params = tp.ToMap()
+	}
+	err := c.DoRequest("GET", "/translations/v2", params, &response)
 	if err != nil {
 		return nil, err
 	}
