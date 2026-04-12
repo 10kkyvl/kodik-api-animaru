@@ -55,117 +55,56 @@ type QualitiesParams struct {
 func (qp *QualitiesParams) ToMap() map[string]string {
 	params := make(map[string]string)
 
-	if qp.Types != "" {
-		params["types"] = qp.Types
+	fields := map[string]string{
+		"types":              qp.Types,
+		"year":               qp.Year,
+		"translation_type":   qp.TranslationType,
+		"has_field":          qp.HasField,
+		"sort":               qp.Sort,
+		"countries":          qp.Countries,
+		"genres":             qp.Genres,
+		"anime_genres":       qp.AnimeGenres,
+		"drama_genres":       qp.DramaGenres,
+		"all_genres":         qp.AllGenres,
+		"duration":           qp.Duration,
+		"kinopoisk_rating":   qp.KinopoiskRating,
+		"imdb_rating":        qp.ImdbRating,
+		"shikimori_rating":   qp.ShikimoriRating,
+		"mydramalist_rating": qp.MydramalistRating,
+		"actors":             qp.Actors,
+		"directors":          qp.Directors,
+		"producers":          qp.Producers,
+		"writers":            qp.Writers,
+		"composers":          qp.Composers,
+		"editors":            qp.Editors,
+		"designers":          qp.Designers,
+		"operators":          qp.Operators,
+		"rating_mpaa":        qp.RatingMPAA,
+		"minimal_age":        qp.MinimalAge,
+		"anime_kind":         qp.AnimeKind,
+		"mydramalist_tags":   qp.MydramalistTags,
+		"anime_status":       qp.AnimeStatus,
+		"drama_status":       qp.DramaStatus,
+		"all_status":         qp.AllStatus,
+		"anime_studios":      qp.AnimeStudios,
+		"anime_licensed_by":  qp.AnimeLicensedBy,
 	}
-	if qp.Year != "" {
-		params["year"] = qp.Year
+
+	for k, v := range fields {
+		if v != "" {
+			if k == "countries" {
+				params[k] = strings.ReplaceAll(v, " ", "")
+			} else {
+				params[k] = v
+			}
+		}
 	}
+
 	if qp.TranslationID != 0 {
 		params["translation_id"] = strconv.Itoa(qp.TranslationID)
 	}
-	if qp.TranslationType != "" {
-		params["translation_type"] = qp.TranslationType
-	}
-	if qp.HasField != "" {
-		params["has_field"] = qp.HasField
-	}
 	if qp.Lgbt != nil {
-		if *qp.Lgbt {
-			params["lgbt"] = "true"
-		} else {
-			params["lgbt"] = "false"
-		}
-	}
-	if qp.Sort != "" {
-		params["sort"] = qp.Sort
-	}
-
-	// Фильтрация по внешним данным
-	if qp.Countries != "" {
-		params["countries"] = strings.ReplaceAll(qp.Countries, " ", "")
-	}
-	if qp.Genres != "" {
-		params["genres"] = qp.Genres
-	}
-	if qp.AnimeGenres != "" {
-		params["anime_genres"] = qp.AnimeGenres
-	}
-	if qp.DramaGenres != "" {
-		params["drama_genres"] = qp.DramaGenres
-	}
-	if qp.AllGenres != "" {
-		params["all_genres"] = qp.AllGenres
-	}
-	if qp.Duration != "" {
-		params["duration"] = qp.Duration
-	}
-	if qp.KinopoiskRating != "" {
-		params["kinopoisk_rating"] = qp.KinopoiskRating
-	}
-	if qp.ImdbRating != "" {
-		params["imdb_rating"] = qp.ImdbRating
-	}
-	if qp.ShikimoriRating != "" {
-		params["shikimori_rating"] = qp.ShikimoriRating
-	}
-	if qp.MydramalistRating != "" {
-		params["mydramalist_rating"] = qp.MydramalistRating
-	}
-
-	// Персоналии
-	if qp.Actors != "" {
-		params["actors"] = qp.Actors
-	}
-	if qp.Directors != "" {
-		params["directors"] = qp.Directors
-	}
-	if qp.Producers != "" {
-		params["producers"] = qp.Producers
-	}
-	if qp.Writers != "" {
-		params["writers"] = qp.Writers
-	}
-	if qp.Composers != "" {
-		params["composers"] = qp.Composers
-	}
-	if qp.Editors != "" {
-		params["editors"] = qp.Editors
-	}
-	if qp.Designers != "" {
-		params["designers"] = qp.Designers
-	}
-	if qp.Operators != "" {
-		params["operators"] = qp.Operators
-	}
-
-	// Другие параметры
-	if qp.RatingMPAA != "" {
-		params["rating_mpaa"] = qp.RatingMPAA
-	}
-	if qp.MinimalAge != "" {
-		params["minimal_age"] = qp.MinimalAge
-	}
-	if qp.AnimeKind != "" {
-		params["anime_kind"] = qp.AnimeKind
-	}
-	if qp.MydramalistTags != "" {
-		params["mydramalist_tags"] = qp.MydramalistTags
-	}
-	if qp.AnimeStatus != "" {
-		params["anime_status"] = qp.AnimeStatus
-	}
-	if qp.DramaStatus != "" {
-		params["drama_status"] = qp.DramaStatus
-	}
-	if qp.AllStatus != "" {
-		params["all_status"] = qp.AllStatus
-	}
-	if qp.AnimeStudios != "" {
-		params["anime_studios"] = qp.AnimeStudios
-	}
-	if qp.AnimeLicensedBy != "" {
-		params["anime_licensed_by"] = qp.AnimeLicensedBy
+		params["lgbt"] = strconv.FormatBool(*qp.Lgbt)
 	}
 
 	return params

@@ -1,6 +1,7 @@
 package models
 
 import (
+	"strconv"
 	"strings"
 )
 
@@ -53,115 +54,53 @@ type TranslationsParams struct {
 func (tp *TranslationsParams) ToMap() map[string]string {
 	params := make(map[string]string)
 
-	if tp.Types != "" {
-		params["types"] = tp.Types
+	fields := map[string]string{
+		"types":              tp.Types,
+		"year":               tp.Year,
+		"translation_type":   tp.TranslationType,
+		"has_field":          tp.HasField,
+		"sort":               tp.Sort,
+		"countries":          tp.Countries,
+		"genres":             tp.Genres,
+		"anime_genres":       tp.AnimeGenres,
+		"drama_genres":       tp.DramaGenres,
+		"all_genres":         tp.AllGenres,
+		"duration":           tp.Duration,
+		"kinopoisk_rating":   tp.KinopoiskRating,
+		"imdb_rating":        tp.ImdbRating,
+		"shikimori_rating":   tp.ShikimoriRating,
+		"mydramalist_rating": tp.MydramalistRating,
+		"actors":             tp.Actors,
+		"directors":          tp.Directors,
+		"producers":          tp.Producers,
+		"writers":            tp.Writers,
+		"composers":          tp.Composers,
+		"editors":            tp.Editors,
+		"designers":          tp.Designers,
+		"operators":          tp.Operators,
+		"rating_mpaa":        tp.RatingMPAA,
+		"minimal_age":        tp.MinimalAge,
+		"anime_kind":         tp.AnimeKind,
+		"mydramalist_tags":   tp.MydramalistTags,
+		"anime_status":       tp.AnimeStatus,
+		"drama_status":       tp.DramaStatus,
+		"all_status":         tp.AllStatus,
+		"anime_studios":      tp.AnimeStudios,
+		"anime_licensed_by":  tp.AnimeLicensedBy,
 	}
-	if tp.Year != "" {
-		params["year"] = tp.Year
-	}
-	if tp.TranslationType != "" {
-		params["translation_type"] = tp.TranslationType
-	}
-	if tp.HasField != "" {
-		params["has_field"] = tp.HasField
-	}
-	if tp.Lgbt != nil {
-		if *tp.Lgbt {
-			params["lgbt"] = "true"
-		} else {
-			params["lgbt"] = "false"
+
+	for k, v := range fields {
+		if v != "" {
+			if k == "countries" {
+				params[k] = strings.ReplaceAll(v, " ", "")
+			} else {
+				params[k] = v
+			}
 		}
 	}
-	if tp.Sort != "" {
-		params["sort"] = tp.Sort
-	}
 
-	// Внешняя фильтрация
-	if tp.Countries != "" {
-		// Убираем пробелы при необходимости
-		params["countries"] = strings.ReplaceAll(tp.Countries, " ", "")
-	}
-	if tp.Genres != "" {
-		params["genres"] = tp.Genres
-	}
-	if tp.AnimeGenres != "" {
-		params["anime_genres"] = tp.AnimeGenres
-	}
-	if tp.DramaGenres != "" {
-		params["drama_genres"] = tp.DramaGenres
-	}
-	if tp.AllGenres != "" {
-		params["all_genres"] = tp.AllGenres
-	}
-	if tp.Duration != "" {
-		params["duration"] = tp.Duration
-	}
-	if tp.KinopoiskRating != "" {
-		params["kinopoisk_rating"] = tp.KinopoiskRating
-	}
-	if tp.ImdbRating != "" {
-		params["imdb_rating"] = tp.ImdbRating
-	}
-	if tp.ShikimoriRating != "" {
-		params["shikimori_rating"] = tp.ShikimoriRating
-	}
-	if tp.MydramalistRating != "" {
-		params["mydramalist_rating"] = tp.MydramalistRating
-	}
-
-	// Персоналии
-	if tp.Actors != "" {
-		params["actors"] = tp.Actors
-	}
-	if tp.Directors != "" {
-		params["directors"] = tp.Directors
-	}
-	if tp.Producers != "" {
-		params["producers"] = tp.Producers
-	}
-	if tp.Writers != "" {
-		params["writers"] = tp.Writers
-	}
-	if tp.Composers != "" {
-		params["composers"] = tp.Composers
-	}
-	if tp.Editors != "" {
-		params["editors"] = tp.Editors
-	}
-	if tp.Designers != "" {
-		params["designers"] = tp.Designers
-	}
-	if tp.Operators != "" {
-		params["operators"] = tp.Operators
-	}
-
-	// Другие параметры
-	if tp.RatingMPAA != "" {
-		params["rating_mpaa"] = tp.RatingMPAA
-	}
-	if tp.MinimalAge != "" {
-		params["minimal_age"] = tp.MinimalAge
-	}
-	if tp.AnimeKind != "" {
-		params["anime_kind"] = tp.AnimeKind
-	}
-	if tp.MydramalistTags != "" {
-		params["mydramalist_tags"] = tp.MydramalistTags
-	}
-	if tp.AnimeStatus != "" {
-		params["anime_status"] = tp.AnimeStatus
-	}
-	if tp.DramaStatus != "" {
-		params["drama_status"] = tp.DramaStatus
-	}
-	if tp.AllStatus != "" {
-		params["all_status"] = tp.AllStatus
-	}
-	if tp.AnimeStudios != "" {
-		params["anime_studios"] = tp.AnimeStudios
-	}
-	if tp.AnimeLicensedBy != "" {
-		params["anime_licensed_by"] = tp.AnimeLicensedBy
+	if tp.Lgbt != nil {
+		params["lgbt"] = strconv.FormatBool(*tp.Lgbt)
 	}
 
 	return params
