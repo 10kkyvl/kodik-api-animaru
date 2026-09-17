@@ -44,7 +44,7 @@ type SearchParams struct {
 	WithSeasons               bool   `json:"with_seasons,omitempty"`
 	Season                    int    `json:"season,omitempty"`
 	WithEpisodes              bool   `json:"with_episodes,omitempty"`
-	WithEpisodesData          bool   `json:"with_episodes_data,omitempty`
+	WithEpisodesData          bool   `json:"with_episodes_data,omitempty"`
 	Episode                   int    `json:"episode,omitempty"`
 	WithPageLinks             bool   `json:"with_page_links,omitempty"`
 	NotBlockedIn              string `json:"not_blocked_in,omitempty"` // список стран через запятую (без пробелов)
